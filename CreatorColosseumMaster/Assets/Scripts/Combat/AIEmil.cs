@@ -41,8 +41,13 @@ public class AIEmil : MonoBehaviour {
 	public bool yReached;
 	public bool grabTime;
 	public bool grabPosition;
-	// Use this for initialization
 
+    public AudioSource sound;
+    public AudioClip smallLaserClip;
+    public AudioClip bigLaserClip;
+    public AudioClip laserChargeClip;
+
+	// Use this for initialization
 	void Start () 
 	{
 		destination = new Vector2 (this.gameObject.transform.position.x, bottomDivider);
@@ -58,13 +63,14 @@ public class AIEmil : MonoBehaviour {
 			DescendPhase ();
 		else 
 		{
-			if (laserNum == 1 || laserNum == 2)
-			{
-				SmallLaser ();
-			}
-			else
-				BigLaser();
-
+            if (laserNum == 1 || laserNum == 2)
+            {                
+                SmallLaser();
+            }
+            else
+            {                
+                BigLaser();
+            }
 		}
 	}
 
@@ -95,6 +101,9 @@ public class AIEmil : MonoBehaviour {
 
 		if ((Time.time - wait) > smallLaserDelay) 
 		{
+            sound.Stop();
+            sound.clip = smallLaserClip;
+            sound.Play();
 			CreateSmallLaser();
 		}
 
@@ -117,6 +126,7 @@ public class AIEmil : MonoBehaviour {
 
 		if ((Time.time - wait) > (bigLaserDelay - bigPositionShootDelay) && !grabPosition) 
 		{
+            sound.PlayOneShot(laserChargeClip);
 			playerPosition = _player.transform.position;
 			_face.GetComponent<SpriteRenderer>().color = Color.red;
 			grabPosition = true;
@@ -124,6 +134,9 @@ public class AIEmil : MonoBehaviour {
 		
 		if ((Time.time - wait) > bigLaserDelay) 
 		{
+            sound.Stop();
+            sound.clip = bigLaserClip;
+            sound.Play();
 			CreateBigLaser();
 		}
 		
@@ -185,7 +198,6 @@ public class AIEmil : MonoBehaviour {
 
 		tempVector = new Vector2 (0, bigLaserPoint.y);
 		bigLaserCollider.transform.position = tempVector;
-
 	}
 }
 
