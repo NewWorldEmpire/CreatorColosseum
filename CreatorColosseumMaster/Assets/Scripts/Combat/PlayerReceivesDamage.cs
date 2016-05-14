@@ -90,7 +90,7 @@ public class PlayerReceivesDamage : MonoBehaviour
                 }
                 if (hitChance <= 1 && (hitChance < defDex_calc))
                 {
-                    au_swordhit.Play();
+                    //au_swordhit.Play();
                     hitChance = 2;
                     meleeHits -= 1;
                     damageTaken = enemy.gameObject.GetComponent<EnemiesReceiveDamage>().damage;
