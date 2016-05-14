@@ -120,10 +120,11 @@ public class CombatScript : MonoBehaviour
 
         au_bow1 = gameObject.AddComponent<AudioSource>();
         AudioClip bow1;
-
+		
         // Resources must be in any folder named Resources.  load as type and cast as type because Unity returns Object by default.
         bow1 = (AudioClip)Resources.Load("Audio/Combat Sounds/Bow", typeof(AudioClip));
         au_bow1.clip = bow1;
+		au_bow1.playOnAwake = false;
 
         au_arrow1 = gameObject.AddComponent<AudioSource>();
         AudioClip arrow1;
@@ -131,6 +132,7 @@ public class CombatScript : MonoBehaviour
         // Resources must be in any folder named Resources.  load as type and cast as type because Unity returns Object by default.
         arrow1 = (AudioClip)Resources.Load("Audio/Combat Sounds/Arrow 6", typeof(AudioClip));
         au_arrow1.clip = arrow1;
+		au_arrow1.playOnAwake = false;
 
         au_arrow2 = gameObject.AddComponent<AudioSource>();
         AudioClip arrow2;
@@ -138,6 +140,7 @@ public class CombatScript : MonoBehaviour
         // Resources must be in any folder named Resources.  load as type and cast as type because Unity returns Object by default.
         arrow2 = (AudioClip)Resources.Load("Audio/Combat Sounds/Arrow 7", typeof(AudioClip));
         au_arrow2.clip = arrow2;
+		au_arrow2.playOnAwake = false;
 
         au_swing1 = gameObject.AddComponent<AudioSource>();
         AudioClip swing1;
@@ -145,30 +148,35 @@ public class CombatScript : MonoBehaviour
         // Resources must be in any folder named Resources.  load as type and cast as type because Unity returns Object by default.
         swing1 = (AudioClip)Resources.Load("Audio/Combat Sounds/Sword Swish 1", typeof(AudioClip));
         au_swing1.clip = swing1;
+		au_swing1.playOnAwake = false;
 
         au_flame1 = gameObject.AddComponent<AudioSource>();
         AudioClip flame1;
 
         flame1 = (AudioClip)Resources.Load("Audio/Spells/magicFlamethrowerSoundEffect", typeof(AudioClip));
         au_flame1.clip = flame1;
+		au_flame1.playOnAwake = false;
 
         au_flame2 = gameObject.AddComponent<AudioSource>();
         AudioClip flame2;
 
         flame2 = (AudioClip)Resources.Load("Audio/Spells/magicFlamethrowerSoundEffectTail", typeof(AudioClip));
         au_flame2.clip = flame2;
+		au_flame2.playOnAwake = false;
 
         au_heal = gameObject.AddComponent<AudioSource>();
         AudioClip heal;
 
         heal = (AudioClip)Resources.Load("Audio/Spells/magicHealingSpellSoundEffect", typeof(AudioClip));
         au_heal.clip = heal;
+		au_heal.playOnAwake = false;
 
         au_light = gameObject.AddComponent<AudioSource>();
         AudioClip light;
 
         light = (AudioClip)Resources.Load("Audio/Spells/magicLightningSoundEffect", typeof(AudioClip));
         au_light.clip = light;
+		au_light.playOnAwake = false;
     }
 
     public void DontAwakeKenneth()

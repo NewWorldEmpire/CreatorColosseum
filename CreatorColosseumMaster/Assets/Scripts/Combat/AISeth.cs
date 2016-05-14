@@ -3,6 +3,9 @@ using System.Collections;
 
 public class AISeth : MonoBehaviour {
 
+	public AudioSource sourceSound;
+	public AudioClip attackSound;
+
 	public int resetSpeed;
 	public int chargeSpeed;
 
@@ -163,6 +166,14 @@ public class AISeth : MonoBehaviour {
 		{
 			transform.position += transform.right * 0;
 			xReached = true;
+		}
+	}
+	void OnCollisionEnter2D(Collision2D playerC)
+	{
+		if (playerC.gameObject.tag.Equals ("Player")) 
+		{
+			sourceSound.clip = attackSound;
+			sourceSound.Play();
 		}
 	}
 	void OnCollisionStay2D(Collision2D playerC)

@@ -4,6 +4,7 @@ using System.Collections;
 public class AIFinal : MonoBehaviour {
 
 	public GameObject _player;
+	public GameObject _level;
 	public GameObject spawnPoint;
 
 	//---------------Mike Vars-------------
@@ -76,10 +77,20 @@ public class AIFinal : MonoBehaviour {
 	//-----------shared bools-------------
 	
 	public bool		xReached;
+	public bool		isDead;
 	public bool		yReached = true;
+	public bool		playSoundOnce;
 	private bool 	isMikeStart	 = true;
 	private bool 	isSethStart	 = true;
 	private bool	isEmilStart  = true;
+
+	//-------------audioClips--------
+	public AudioSource  source;
+	public AudioClip   	tankFire;
+	public AudioClip  	bikeHit;
+	public AudioClip   	smallLaser;
+	public AudioClip	chargeLaser;
+	public AudioClip    bigLaser;
 
 	// Use this for initialization
 	void Start () 
@@ -106,13 +117,20 @@ public class AIFinal : MonoBehaviour {
 			else
 				SethPhase();
 		} 
-		else 
+		else if (this.gameObject.GetComponent<EnemiesReceiveDamage> ().hp > 0)
 		{
 			if (isEmilStart)
 				EmilStart();
 			else
 				EmilPhase();
 		}
+		else
+			if (!isDead) 
+			{
+				_level.GetComponent<Transitions>().levelSelect ++;
+				isDead = true;
+			}
+
 	}
 
 //=================Mike Phase========================================
@@ -155,6 +173,7 @@ public class AIFinal : MonoBehaviour {
 	//------------------ShootPhase()---------
 	void ShootPhase()
 	{
+		source.PlayOneShot(tankFire);    
 		lastShot = Time.time;
 		
 		GameObject obj = EnemyFinalPooling.current.GetPooledObject ();
@@ -289,9 +308,7 @@ public class AIFinal : MonoBehaviour {
 		
 		if ((Time.time - wait) > (smallLaserDelay + smallLaserDuration)) 
 		{
-			_laser.SetActive(false);
-			grabTime = false;
-			grabPosition = false;
+			EndLaser();
 			laserNum ++;
 		}
 	}
@@ -306,38 +323,57 @@ public class AIFinal : MonoBehaviour {
 		
 		if ((Time.time - wait) > (bigLaserDelay - bigPositionShootDelay) && !grabPosition) 
 		{
+			source.PlayOneShot(chargeLaser);
 			playerPosition = _player.transform.position;
 			grabPosition = true;
+			//currentFace = chargingFace;
+			//_face.GetComponent<SpriteRenderer> ().sprite = currentFace;
 		}
 		
 		if ((Time.time - wait) > bigLaserDelay) 
 		{
 			CreateBigLaser();
+			//currentFace = firingFace;
+			//_face.GetComponent<SpriteRenderer> ().sprite = currentFace;
 		}
 		
 		if ((Time.time - wait) > (bigLaserDelay + bigLaserDuration)) 
 		{
-			_laser.SetActive(false);
-			grabTime = false;
-			grabPosition = false;
+			EndLaser();
+			source.Stop ();
 			laserNum = 1;
 		}
 	}
+
 	void CreateSmallLaser()
 	{
+		if (!playSoundOnce) 
+		{
+			source.Stop ();
+			source.PlayOneShot(smallLaser);
+			playSoundOnce = true;
+		}
 		_laser.SetActive(true);
 		smallLaserCollider.gameObject.SetActive (true);
 		bigLaserCollider.gameObject.SetActive (false);
 		
 		_laser.GetComponent<LineRenderer>().SetWidth (2, 2);
 		
-		_laser.GetComponent<LineRenderer> ().SetPosition (0, _face.transform.position);
+		_laser.GetComponent<LineRenderer> ().SetPosition (0, facePosition);
 		_laser.GetComponent<LineRenderer> ().SetPosition (1, playerPosition);
 		smallLaserCollider.transform.position = playerPosition;
 	}
 	
 	void CreateBigLaser()
 	{
+		if (!playSoundOnce) 
+		{
+			source.Stop ();
+			source.clip = bigLaser;
+			source.Play();
+			playSoundOnce = true;
+		}
+		
 		_laser.SetActive(true);
 		smallLaserCollider.gameObject.SetActive (false);
 		bigLaserCollider.gameObject.SetActive (true);
@@ -350,7 +386,15 @@ public class AIFinal : MonoBehaviour {
 		
 		tempVector = new Vector2 (0, bigLaserPoint.y);
 		bigLaserCollider.transform.position = tempVector;
-		
+	}
+	
+	void EndLaser()
+	{
+		//source.Stop ();
+		playSoundOnce = false;
+		_laser.SetActive(false);
+		grabTime = false;
+		grabPosition = false;
 	}
 	//----------------MovePhase--------------
 	void MovePhase(Vector2 destination, float movingSpeed)
@@ -390,6 +434,16 @@ public class AIFinal : MonoBehaviour {
 		}
 	}
 //=================OnCollision===============
+	void OnCollisionEnter2D(Collision2D playerC)
+	{
+		if (playerC.gameObject.tag.Equals ("Player") && (this.gameObject.GetComponent<EnemiesReceiveDamage> ().hp > 
+		                                                 (this.gameObject.GetComponent<EnemiesReceiveDamage> ().maxHp * .333)) ) 
+		{
+			source.clip = bikeHit;
+			source.Play();
+		}
+	}
+
 	void OnCollisionStay2D(Collision2D playerC)
 	{
 		if (this.gameObject.GetComponent<EnemiesReceiveDamage> ().hp > 

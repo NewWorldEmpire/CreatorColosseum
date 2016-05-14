@@ -69,6 +69,10 @@ public class Transitions : MonoBehaviour
         {
             finalTransition = StartTransition(finalEnemies, finalEnemiesList, emilEnemiesList, backgroundArray[3], foregroundArray[3], "FinalBoss");
         }
+		else if (levelSelect == 5)
+		{
+			Application.LoadLevel("WinScreen");
+		}
     }
 
 

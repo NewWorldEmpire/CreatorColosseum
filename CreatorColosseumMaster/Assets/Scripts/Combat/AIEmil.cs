@@ -20,15 +20,17 @@ public class AIEmil : MonoBehaviour {
 	public float   	bigLaserDuration	= .3f;
 	private float	wait;
 
-	public Vector2	destination;
-	public Vector2  playerPosition;
-	public Vector2	facePosition;
-	public Vector2 	tempVector;
-	public Vector2  bigLaserPoint = new Vector2 (-120, -45);
+	Vector2	destination;
+	Vector2  playerPosition;
+	Vector2	facePosition;
+	Vector2 	tempVector;
+	Vector2  bigLaserPoint = new Vector2 (-120, -45);
 
 	public GameObject	_player;
 	public GameObject	_face;
 	public GameObject 	_laser;
+	public GameObject   _level;
+	public GameObject	_laserSpawn;
 
 	public Collider2D	smallLaserCollider;
 	public Collider2D	bigLaserCollider;
@@ -37,10 +39,14 @@ public class AIEmil : MonoBehaviour {
 	public Sprite face1;
 	public Sprite face2;
 	public Sprite face3;
+	public Sprite chargingFace;
+	public Sprite firingFace;
 
 	public bool yReached;
 	public bool grabTime;
 	public bool grabPosition;
+	public bool playSoundOnce;
+	public bool isDead;
 
     public AudioSource sound;
     public AudioClip smallLaserClip;
@@ -72,6 +78,12 @@ public class AIEmil : MonoBehaviour {
                 BigLaser();
             }
 		}
+
+		if (this.gameObject.GetComponent<EnemiesReceiveDamage>().hp <= 0 && !isDead) 
+		{
+			_level.GetComponent<Transitions>().levelSelect ++;
+			isDead = true;
+		}
 	}
 
 	void DescendPhase()
@@ -101,17 +113,12 @@ public class AIEmil : MonoBehaviour {
 
 		if ((Time.time - wait) > smallLaserDelay) 
 		{
-            sound.Stop();
-            sound.clip = smallLaserClip;
-            sound.Play();
 			CreateSmallLaser();
 		}
 
 		if ((Time.time - wait) > (smallLaserDelay + smallLaserDuration)) 
 		{
-			_laser.SetActive(false);
-			grabTime = false;
-			grabPosition = false;
+			EndLaser();
 			laserNum ++;
 		}
 	}
@@ -128,24 +135,22 @@ public class AIEmil : MonoBehaviour {
 		{
             sound.PlayOneShot(laserChargeClip);
 			playerPosition = _player.transform.position;
-			_face.GetComponent<SpriteRenderer>().color = Color.red;
 			grabPosition = true;
+			currentFace = chargingFace;
+			_face.GetComponent<SpriteRenderer> ().sprite = currentFace;
 		}
 		
 		if ((Time.time - wait) > bigLaserDelay) 
 		{
-            sound.Stop();
-            sound.clip = bigLaserClip;
-            sound.Play();
 			CreateBigLaser();
+			currentFace = firingFace;
+			_face.GetComponent<SpriteRenderer> ().sprite = currentFace;
 		}
 		
 		if ((Time.time - wait) > (bigLaserDelay + bigLaserDuration)) 
 		{
-			_laser.SetActive(false);
-			grabTime = false;
-			grabPosition = false;
-			_face.GetComponent<SpriteRenderer>().color = Color.clear;
+			EndLaser();
+			sound.Stop ();
 			laserNum = 1;
 		}
 	}
@@ -155,17 +160,17 @@ public class AIEmil : MonoBehaviour {
 		if (_player.transform.position.y > topDivider) 
 		{
 			currentFace = face1;
-			facePosition = _face.transform.position;
+			facePosition = _laserSpawn.transform.position;
 		}
 		else if (_player.transform.position.y > bottomDivider)
 		{
 			currentFace = face2;
-			facePosition = _face.transform.position;
+			facePosition = _laserSpawn.transform.position;
 		} 
 		else 
 		{
 			currentFace = face3;
-			facePosition = _face.transform.position;
+			facePosition = _laserSpawn.transform.position;
 		}
 
 		_face.GetComponent<SpriteRenderer> ().sprite = currentFace;
@@ -173,6 +178,12 @@ public class AIEmil : MonoBehaviour {
 
 	void CreateSmallLaser()
 	{
+		if (!playSoundOnce) 
+		{
+			sound.Stop ();
+			sound.PlayOneShot(smallLaserClip);
+			playSoundOnce = true;
+		}
 		_laser.SetActive(true);
 		smallLaserCollider.gameObject.SetActive (true);
 		bigLaserCollider.gameObject.SetActive (false);
@@ -186,6 +197,14 @@ public class AIEmil : MonoBehaviour {
 
 	void CreateBigLaser()
 	{
+		if (!playSoundOnce) 
+		{
+			sound.Stop ();
+			sound.clip = bigLaserClip;
+			sound.Play();
+			playSoundOnce = true;
+		}
+
 		_laser.SetActive(true);
 		smallLaserCollider.gameObject.SetActive (false);
 		bigLaserCollider.gameObject.SetActive (true);
@@ -198,6 +217,15 @@ public class AIEmil : MonoBehaviour {
 
 		tempVector = new Vector2 (0, bigLaserPoint.y);
 		bigLaserCollider.transform.position = tempVector;
+	}
+
+	void EndLaser()
+	{
+		//sound.Stop ();
+		playSoundOnce = false;
+		_laser.SetActive(false);
+		grabTime = false;
+		grabPosition = false;
 	}
 }
 

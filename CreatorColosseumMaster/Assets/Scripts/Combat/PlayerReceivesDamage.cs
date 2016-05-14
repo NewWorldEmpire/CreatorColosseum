@@ -37,18 +37,21 @@ public class PlayerReceivesDamage : MonoBehaviour
         // Resources must be in any folder named Resources.  load as type and cast as type because Unity returns Object by default.
         miss1 = (AudioClip)Resources.Load("Audio/Combat Sounds/Sword 1", typeof(AudioClip));
         au_miss1.clip = miss1;
+		au_miss1.playOnAwake = false;
 
         au_arrowhit = gameObject.AddComponent<AudioSource>();
         AudioClip arrowhit;
         // Resources must be in any folder named Resources.  load as type and cast as type because Unity returns Object by default.
         arrowhit = (AudioClip)Resources.Load("Audio/Combat Sounds/weaponBowArrowHitSoundEffect", typeof(AudioClip));
         au_arrowhit.clip = arrowhit;
+		au_arrowhit.playOnAwake = false;
 
         au_swordhit = gameObject.AddComponent<AudioSource>();
         AudioClip swordhit;
         // Resources must be in any folder named Resources.  load as type and cast as type because Unity returns Object by default.
         swordhit = (AudioClip)Resources.Load("Audio/Combat Sounds/weaponSwordHitSoundEffect", typeof(AudioClip));
         au_swordhit.clip = swordhit;
+		au_swordhit.playOnAwake = false;
 
     }
     void Update()
