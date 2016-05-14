@@ -57,7 +57,7 @@ public class EnemyAnimation : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("Hit " + other.gameObject);
+
             anim.SetBool("Attack", true);
             anim.speed = 1f;
         }

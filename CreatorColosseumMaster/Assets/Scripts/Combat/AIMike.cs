@@ -23,11 +23,17 @@ public class AIMike : MonoBehaviour {
 
     public Transform bulletSpawn;
 
+    public AudioSource sound;
+    public AudioClip tankFire;
+    public AudioClip tankMove;
+
     // Use this for initialization
     void Start()
     {
         xPos = transform.position.x;
         destination = new Vector2(transform.position.x, transform.position.y); //where he starts
+        sound.clip = tankMove;
+        sound.Play();
     }
 
     // Update is called once per frame
@@ -78,6 +84,8 @@ public class AIMike : MonoBehaviour {
     //====================MOVING PHASE=====================
     void MovePhase(Vector2 destination)
     {
+        
+
         //moving up and down towards destination
         if ((destination.y - 1) > transform.position.y)
         {
@@ -115,6 +123,8 @@ public class AIMike : MonoBehaviour {
     //------------------ShootPhase()---------
     void ShootPhase()
     {
+        sound.PlayOneShot(tankFire);        
+
         GetComponent<Animator>().SetBool("Shoot", true);
         GetComponent<Animator>().SetBool("TankIdle", false);
 

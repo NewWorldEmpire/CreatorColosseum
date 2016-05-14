@@ -86,7 +86,7 @@ public class CheckForEnemies : MonoBehaviour {
 
     void FadeIn()
     {
-        if (audio2Volume < 1)
+        if (audio2Volume < 0.5)
         {
             audio2Volume += 0.25f * Time.deltaTime;
             music.volume = audio2Volume;

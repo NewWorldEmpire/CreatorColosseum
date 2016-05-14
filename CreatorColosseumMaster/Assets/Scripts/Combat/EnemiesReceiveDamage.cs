@@ -34,7 +34,6 @@ public class EnemiesReceiveDamage : MonoBehaviour {
     public bool dead = false;
     bool nowDead = true;
 
-
     //** SOUNDS **
     [HideInInspector]
     public AudioSource au_miss1;
@@ -43,8 +42,11 @@ public class EnemiesReceiveDamage : MonoBehaviour {
     [HideInInspector]
     public AudioSource au_swordhit;
 
-    bool frozen;
+    public AudioSource sound;
+    public AudioClip damageClip;
+    public AudioClip deathClip;
 
+    bool frozen;
 
 
     void Awake()
@@ -56,7 +58,6 @@ public class EnemiesReceiveDamage : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
         rb = GetComponent<Rigidbody2D>();
 
         au_miss1 = gameObject.AddComponent<AudioSource>();
@@ -120,11 +121,12 @@ public class EnemiesReceiveDamage : MonoBehaviour {
         {
             if(dead)
             {
+                AudioSource.PlayClipAtPoint(deathClip, transform.position);
                 gameObject.SetActive(false);
                 hPBar.SetActive(false);
             }
             if (hp <= 0)
-            {
+            {                
                 dead = true;                
             }
         }
@@ -157,6 +159,10 @@ public class EnemiesReceiveDamage : MonoBehaviour {
         //light damage
         if (col.gameObject.tag == "Mouse" && col.gameObject.GetComponent<MouseScript>().hit == true)
         {
+            if (gameObject.tag == "Boss")
+            {
+                sound.PlayOneShot(damageClip, 1f);
+            }
             col.gameObject.GetComponent<MouseScript>().hit = false;
             damageTaken += _player.GetComponent<CombatScript>().lightDamage;
             InitCBT(damageTaken.ToString()).GetComponent<Animator>().SetTrigger("Hit");
@@ -167,7 +173,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 
         //ice damage
         if (col.gameObject.tag == "Ice")
-        {
+        {            
             hPTimer = 3;
             hPBar.SetActive(true);
             hp -= _player.GetComponent<CombatScript>().iceDamage * Time.deltaTime;
@@ -230,6 +236,10 @@ public class EnemiesReceiveDamage : MonoBehaviour {
                     //Damage caused by critical hit (critical hits do 5 times more than normal damage)
                     if (criticalHit < 2 && criticalHit <= _player.GetComponent<CombatScript>().criticalChance)
                     {
+                        if (gameObject.tag == "Boss")
+                        {
+                            sound.PlayOneShot(damageClip, 1f);
+                        }
                         damageTaken = (damageTaken * _player.GetComponent<CombatScript>().criticalDamage);
                         damageTaken = Mathf.Round(damageTaken * 1.0f) / 1.0f;
                         InitCBT(damageTaken.ToString()).GetComponent<Animator>().SetTrigger("Crit");
@@ -243,6 +253,10 @@ public class EnemiesReceiveDamage : MonoBehaviour {
                     //Nomal damage
                     if (criticalHit < 2 && criticalHit > _player.GetComponent<CombatScript>().criticalChance) // was originally criticalHit != _player.GetComponent<CombatScript>().criticalChance)
                     {
+                        if (gameObject.tag == "Boss")
+                        {
+                            sound.PlayOneShot(damageClip, 1f);
+                        }
                         damageTaken = Mathf.Round(damageTaken * 1.0f) / 1.0f;
                         //print ("damageTaken " + damageTaken);
                         InitCBT(damageTaken.ToString()).GetComponent<Animator>().SetTrigger("Hit");
@@ -301,6 +315,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
             if (hitChance <= 1 && (hitChance < defDex_calc))
             {
                 au_arrowhit.Play();
+                
                 Destroy(ar.gameObject);
                 hitChance = 2;
                 //damageTaken = _player.GetComponent<CombatScript>().playerDamage;
@@ -317,6 +332,10 @@ public class EnemiesReceiveDamage : MonoBehaviour {
                 //Damage caused by critical hit (critical hits do 5 times more than normal damage).
                 if (criticalHit < 2 && criticalHit <= _player.GetComponent<CombatScript>().criticalChance)
                 {
+                    if (gameObject.tag == "Boss")
+                    {
+                        sound.PlayOneShot(damageClip, 1f);
+                    }
                     damageTaken = (damageTaken * _player.GetComponent<CombatScript>().criticalDamage);
                     damageTaken = Mathf.Round(damageTaken * 1.0f) / 1.0f;
                     InitCBT(damageTaken.ToString()).GetComponent<Animator>().SetTrigger("Crit");
@@ -329,6 +348,10 @@ public class EnemiesReceiveDamage : MonoBehaviour {
                 //Nomal damage
                 if (criticalHit < 2 && criticalHit > _player.GetComponent<CombatScript>().criticalChance) // was originally criticalHit != _player.GetComponent<CombatScript>().criticalChance)
                 {
+                    if (gameObject.tag == "Boss")
+                    {
+                        sound.PlayOneShot(damageClip, 1f);
+                    }
                     damageTaken = Mathf.Round(damageTaken * 1.0f) / 1.0f;
                     InitCBT(damageTaken.ToString()).GetComponent<Animator>().SetTrigger("Hit");
                     hp -= damageTaken;
