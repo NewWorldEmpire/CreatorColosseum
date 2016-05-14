@@ -53,6 +53,9 @@ public class AISmall : MonoBehaviour {
     public bool xReached = false;
     public bool yReached = false;
 
+    public AudioSource sound;
+    public AudioClip attackSound;
+
     // Use this for initialization
     void Start()
     {
@@ -115,6 +118,7 @@ public class AISmall : MonoBehaviour {
             {
                 if (_player.GetComponent<PlayerReceivesDamage>() != null)
                 {
+                    sound.PlayOneShot(attackSound);
                     _player.GetComponent<PlayerReceivesDamage>().meleeHits++;
                     attackTimer = permentTimer;
                 }
