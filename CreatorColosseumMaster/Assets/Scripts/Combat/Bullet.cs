@@ -27,10 +27,10 @@ public class Bullet : MonoBehaviour {
             MovePhase();
         }
 
-        if (levelSelect.GetComponent<Transitions>().levelSelect > 1)
-        {
+		if (levelSelect.GetComponent<Transitions>().levelSelect > 1 && levelSelect.GetComponent<Transitions>().levelSelect < 3)
             destination = new Vector2(500, 0);
-        }
+		else
+			destination = new Vector2(xMin, transform.position.y);
 
     }
 
@@ -38,6 +38,7 @@ public class Bullet : MonoBehaviour {
     {
         if (destination.x < transform.position.x)
         {
+			print ("yes");
             transform.position += transform.right * -movingSpeed * Time.deltaTime;
         }
         else

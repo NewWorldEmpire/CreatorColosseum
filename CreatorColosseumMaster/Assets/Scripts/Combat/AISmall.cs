@@ -44,6 +44,7 @@ public class AISmall : MonoBehaviour {
 
     public GameObject _player;
     public GameObject _camera;
+	public GameObject _list;
 
     private Vector3 vectorDestination;
 
@@ -163,7 +164,7 @@ public class AISmall : MonoBehaviour {
         }
         else
         {
-            _camera.GetComponent<CheckForEnemies>().CheckWhoClosest();
+            _list.GetComponent<CheckForEnemies>().CheckWhoClosest();
 
             if (forceAttack)
             {

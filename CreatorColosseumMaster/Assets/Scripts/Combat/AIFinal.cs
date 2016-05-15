@@ -5,7 +5,13 @@ public class AIFinal : MonoBehaviour {
 
 	public GameObject _player;
 	public GameObject _level;
-	public GameObject spawnPoint;
+	public GameObject bulletSpawnPoint;
+	public GameObject laserSpawnPoint;
+
+	public Sprite	  facingRight;
+	public Sprite 	  facingLeft;
+	public Sprite	  laserFar;
+	public Sprite	  laserNear;
 
 	//---------------Mike Vars-------------
 	public float 	mikePhaseSpeed;
@@ -175,6 +181,8 @@ public class AIFinal : MonoBehaviour {
 	{
 		source.PlayOneShot(tankFire);    
 		lastShot = Time.time;
+
+		print ("Shoot Left Animation = true");
 		
 		GameObject obj = EnemyFinalPooling.current.GetPooledObject ();
 		
@@ -183,7 +191,7 @@ public class AIFinal : MonoBehaviour {
 			return;
 		}
 		
-		obj.transform.position = spawnPoint.transform.position;
+		obj.transform.position = bulletSpawnPoint.transform.position;
 		obj.transform.rotation = transform.rotation;
 		obj.SetActive (true);
 		
@@ -246,6 +254,15 @@ public class AIFinal : MonoBehaviour {
 	{
 		if (!grabPlayerY) 
 		{
+			//reset poistive, left, reset negative, right
+			if (resetPoint > 0)
+			{
+				GetComponent<SpriteRenderer>().sprite = facingLeft;
+			}
+			else if (resetPoint < 0)
+			{
+				GetComponent<SpriteRenderer>().sprite = facingRight;
+			}
 			destination = new Vector2 (resetPoint, _player.transform.position.y);
 			grabPlayerY = true;
 			wait = Time.time;
@@ -279,9 +296,23 @@ public class AIFinal : MonoBehaviour {
 
 	void EmilPhase()
 	{
+		facePosition = laserSpawnPoint.transform.position;
+
 		if (laserNum == 1 || laserNum == 2)
 		{
 			SmallLaser ();
+			if (_player.transform.position.y > topDivider) 
+			{
+				GetComponent<SpriteRenderer>().sprite = laserFar;
+			}
+			else if (_player.transform.position.y > bottomDivider)
+			{
+				GetComponent<SpriteRenderer>().sprite = facingLeft;
+			} 
+			else 
+			{
+				GetComponent<SpriteRenderer>().sprite = laserNear;
+			}
 		}
 		else
 			BigLaser();
@@ -326,15 +357,13 @@ public class AIFinal : MonoBehaviour {
 			source.PlayOneShot(chargeLaser);
 			playerPosition = _player.transform.position;
 			grabPosition = true;
-			//currentFace = chargingFace;
-			//_face.GetComponent<SpriteRenderer> ().sprite = currentFace;
+			GetComponent<SpriteRenderer>().sprite = facingLeft;
 		}
 		
 		if ((Time.time - wait) > bigLaserDelay) 
 		{
 			CreateBigLaser();
-			//currentFace = firingFace;
-			//_face.GetComponent<SpriteRenderer> ().sprite = currentFace;
+			//GetComponent<SpriteRenderer>().sprite = facingLeft;
 		}
 		
 		if ((Time.time - wait) > (bigLaserDelay + bigLaserDuration)) 
