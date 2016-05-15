@@ -98,6 +98,8 @@ public class AIFinal : MonoBehaviour {
 	public AudioClip	chargeLaser;
 	public AudioClip    bigLaser;
 
+	public Animator		anim;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -152,6 +154,8 @@ public class AIFinal : MonoBehaviour {
 		if (!yReached) 
 		{
 			MovePhase (destination, mikePhaseSpeed);
+			//GetComponent<Animator>().SetBool("Idle", true);
+			//GetComponent<Animator>().SetBool("Shoot", false);
 		}
 		else 
 		{
@@ -159,6 +163,11 @@ public class AIFinal : MonoBehaviour {
 			{
 				ShootPhase();
 				destination = CreateDestination ();
+			}
+			else 
+			{
+				GetComponent<Animator>().SetBool("Idle", true);
+				GetComponent<Animator>().SetBool("Shoot", false);
 			}
 		}
 	}
@@ -182,7 +191,8 @@ public class AIFinal : MonoBehaviour {
 		source.PlayOneShot(tankFire);    
 		lastShot = Time.time;
 
-		print ("Shoot Left Animation = true");
+		GetComponent<Animator>().SetBool("Idle", false);
+		GetComponent<Animator>().SetBool("Shoot", true);
 		
 		GameObject obj = EnemyFinalPooling.current.GetPooledObject ();
 		
