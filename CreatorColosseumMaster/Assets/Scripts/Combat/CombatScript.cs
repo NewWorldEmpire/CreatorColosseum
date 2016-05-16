@@ -55,6 +55,7 @@ public class CombatScript : MonoBehaviour
     public int spells = 0;
     public GameObject shieldChild;
     public int shield;
+    public float shieldTimerLength;
     public int healthRestore = 25;
     [HideInInspector]
     public bool casting = false;
@@ -659,7 +660,7 @@ public class CombatScript : MonoBehaviour
 
             shieldChild.SetActive(true);
             shieldCoolDown = shieldCoolDownLength;
-            shieldTimer = 18;
+            shieldTimer = shieldTimerLength;
             armor += shield;
 
             //prevent player from moving
