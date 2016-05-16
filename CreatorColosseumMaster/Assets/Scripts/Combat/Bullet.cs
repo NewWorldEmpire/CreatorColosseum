@@ -51,8 +51,12 @@ public class Bullet : MonoBehaviour {
         {
             armor = _player.GetComponent<CombatScript>().armor;
             _player.GetComponent<PlayerReceivesDamage>().InitiateCBT(bulletDamage.ToString()).GetComponent<Animator>().SetTrigger("Hit"); //changed playerReceivesDamge
-            _player.GetComponent<CombatScript>().health -= (bulletDamage - armor);
-            this.gameObject.SetActive(false);
+			this.gameObject.SetActive(false);
+
+			if (armor < bulletDamage)
+			{
+				_player.GetComponent<CombatScript>().health -= (bulletDamage - armor);
+			}
         }
     }
 }

@@ -136,6 +136,7 @@ public class Transitions : MonoBehaviour
         cutsceneCam.SetActive(false);
         canvas.SetActive(true);
         player.SetActive(true);
+		player.GetComponent<CombatScript> ().armor = 0;
         mouse.SetActive(true);
         map.SetActive(false);
         music.clip = battleMusic;

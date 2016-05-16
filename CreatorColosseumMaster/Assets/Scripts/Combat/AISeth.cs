@@ -182,7 +182,11 @@ public class AISeth : MonoBehaviour {
 		{ 
 			armor = _player.GetComponent<CombatScript> ().armor;
 			_player.GetComponent<PlayerReceivesDamage> ().InitiateCBT (chargeDamage.ToString ()).GetComponent<Animator> ().SetTrigger ("Hit"); //changed playerReceivesDamge
-			_player.GetComponent<CombatScript> ().health -= (chargeDamage - armor);
+
+			if (armor < chargeDamage)
+			{
+				_player.GetComponent<CombatScript> ().health -= (chargeDamage - armor);
+			}
 		}
 	}
 }
