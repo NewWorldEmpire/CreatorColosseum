@@ -4,6 +4,7 @@ using System.Collections;
 public class AIMike : MonoBehaviour {
 
     public GameObject levelSelect;
+	public GameObject hedgehogs;
 
     public float movingSpeed;
     public float fireFreq;
@@ -34,6 +35,7 @@ public class AIMike : MonoBehaviour {
         destination = new Vector2(transform.position.x, transform.position.y); //where he starts
         sound.clip = tankMove;
         sound.Play();
+		hedgehogs.SetActive (true);
     }
 
     // Update is called once per frame
@@ -63,6 +65,7 @@ public class AIMike : MonoBehaviour {
         {
             levelSelect.GetComponent<Transitions>().levelSelect++;
             isDead = true;
+			hedgehogs.SetActive (false);
         }
 
     }
