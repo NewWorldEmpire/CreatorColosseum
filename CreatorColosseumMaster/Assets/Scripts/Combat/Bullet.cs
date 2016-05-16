@@ -38,7 +38,6 @@ public class Bullet : MonoBehaviour {
     {
         if (destination.x < transform.position.x)
         {
-			print ("yes");
             transform.position += transform.right * -movingSpeed * Time.deltaTime;
         }
         else
