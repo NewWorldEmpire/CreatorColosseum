@@ -48,9 +48,11 @@ public class Transitions : MonoBehaviour
         mikeEnemies.SetActive(true);
         sethEnemies.SetActive(false);
         emilEnemies.SetActive(false);
+		finalEnemies.SetActive(false);
         sethTransition = true;
         emilTransition = true;
         finalTransition = true;
+		mikeEnemiesList.SetActive(true);
         //playerMarker.GetComponent<Animator>().SetBool("Idle", true);
     }
 

@@ -29,7 +29,7 @@ public class CheckForEnemies : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        //boss.SetActive(false);
+        boss.SetActive(false);
     }
 
     // Update is called once per frame

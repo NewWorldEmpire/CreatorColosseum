@@ -154,8 +154,8 @@ public class AIFinal : MonoBehaviour {
 		if (!yReached) 
 		{
 			MovePhase (destination, mikePhaseSpeed);
-			//GetComponent<Animator>().SetBool("Idle", true);
-			//GetComponent<Animator>().SetBool("Shoot", false);
+			GetComponent<Animator>().SetBool("Idle", true);
+			GetComponent<Animator>().SetBool("Shoot", false);
 		}
 		else 
 		{
@@ -209,6 +209,7 @@ public class AIFinal : MonoBehaviour {
 //=========================SETH PHASE===================================
 	void SethStart()
 	{
+		GetComponent<Animator>().SetBool("Shoot", false);
 		isReset = true;
 		resetPoint =  xMax - 20;
 		isSethStart = false;
@@ -234,13 +235,13 @@ public class AIFinal : MonoBehaviour {
 		{
 			if (transform.position.x > _player.transform.position.x) 
 			{
-				print ("GO LEFT: " + grabPlayerY);
+				//print ("GO LEFT: " + grabPlayerY);
 				destination = new Vector2 (xMin - 20, transform.position.y);
 				resetPoint = xMin + 20;
 			}
 			else 
 			{
-				print ("GO RIGHT: " + grabPlayerY);
+				//print ("GO RIGHT: " + grabPlayerY);
 				destination = new Vector2 (xMax + 20, transform.position.y);
 				resetPoint = xMax - 20;
 			}
@@ -252,7 +253,7 @@ public class AIFinal : MonoBehaviour {
 		
 		if (yReached && xReached) 
 		{
-			print ("Hello! + RESET PHASE");
+			//print ("Hello! + RESET PHASE");
 			isAttack = false;
 			isReset = true;
 			grabPlayerY = false;
@@ -267,11 +268,17 @@ public class AIFinal : MonoBehaviour {
 			//reset poistive, left, reset negative, right
 			if (resetPoint > 0)
 			{
-				GetComponent<SpriteRenderer>().sprite = facingLeft;
+				print ("left");
+				GetComponent<Animator>().SetBool("GoLeft", true);
+				GetComponent<Animator>().SetBool("GoRight", false);
+				//GetComponent<SpriteRenderer>().sprite = facingLeft;
 			}
 			else if (resetPoint < 0)
 			{
-				GetComponent<SpriteRenderer>().sprite = facingRight;
+				print ("right");
+				GetComponent<Animator>().SetBool("GoRight", true);
+				GetComponent<Animator>().SetBool("GoLeft", false);
+				//GetComponent<SpriteRenderer>().sprite = facingRight;
 			}
 			destination = new Vector2 (resetPoint, _player.transform.position.y);
 			grabPlayerY = true;
@@ -284,7 +291,7 @@ public class AIFinal : MonoBehaviour {
 		{
 			if (yReached && xReached) 
 			{
-				print ("Hello! + ATTACK END");
+				//print ("Hello! + ATTACK END");
 				isAttack = true;
 				isReset = false;
 				grabPlayerY = false;
@@ -295,6 +302,8 @@ public class AIFinal : MonoBehaviour {
 //=========================Emil PHASE===================================
 	void EmilStart()
 	{
+		GetComponent<Animator>().SetBool("GoLeft", true);
+		GetComponent<Animator>().SetBool("GoRight", false);
 		MovePhase (emilResetPoint.transform.position, emilResetSpeed);
 
 		if (xReached && yReached) 
@@ -311,17 +320,27 @@ public class AIFinal : MonoBehaviour {
 		if (laserNum == 1 || laserNum == 2)
 		{
 			SmallLaser ();
+
 			if (_player.transform.position.y > topDivider) 
 			{
-				GetComponent<SpriteRenderer>().sprite = laserFar;
+				GetComponent<Animator>().SetBool("ShootHigh", true);
+				GetComponent<Animator>().SetBool("ShootMiddle", false);
+				GetComponent<Animator>().SetBool("ShootLow", false);
+				//GetComponent<SpriteRenderer>().sprite = laserFar;
 			}
 			else if (_player.transform.position.y > bottomDivider)
 			{
-				GetComponent<SpriteRenderer>().sprite = facingLeft;
+				GetComponent<Animator>().SetBool("ShootHigh", false);
+				GetComponent<Animator>().SetBool("ShootMiddle", true);
+				GetComponent<Animator>().SetBool("ShootLow", false);
+				//GetComponent<SpriteRenderer>().sprite = facingLeft;
 			} 
 			else 
 			{
-				GetComponent<SpriteRenderer>().sprite = laserNear;
+				GetComponent<Animator>().SetBool("ShootHigh", false);
+				GetComponent<Animator>().SetBool("ShootMiddle", false);
+				GetComponent<Animator>().SetBool("ShootLow", true);
+				//GetComponent<SpriteRenderer>().sprite = laserNear;
 			}
 		}
 		else
