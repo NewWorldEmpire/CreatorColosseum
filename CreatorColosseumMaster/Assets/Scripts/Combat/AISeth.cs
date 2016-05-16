@@ -189,4 +189,13 @@ public class AISeth : MonoBehaviour {
 			}
 		}
 	}
+
+    void OnCollisionExit2D(Collision2D playerC)
+    {
+        if (playerC.gameObject.tag.Equals("Player"))
+        {
+            sourceSound.clip = attackSound;
+            sourceSound.Stop();
+        }
+    }
 }
