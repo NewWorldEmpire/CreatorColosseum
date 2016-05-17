@@ -15,16 +15,16 @@ public class PlayerCombatOverlay : MonoBehaviour {
     private string staminaCurrent;
     private string staminaMax;
 
-    private string expCurrent;
-    private string expMax;
-    private string playerLevel;
+   	//private string expCurrent;
+    //private string expMax;
+    //private string playerLevel;
 
     public Text healthTextbox;
     public Text staminaTextbox;
 
-    public Text expCurrentTextbox;
-    public Text expMaxTextbox;
-    public Text playerLevelTextbox;
+    //public Text expCurrentTextbox;
+    //public Text expMaxTextbox;
+    //public Text playerLevelTextbox;
 
     float calculatorHealth;
     float calculatorDrain;
@@ -32,10 +32,10 @@ public class PlayerCombatOverlay : MonoBehaviour {
     float calculatorExp;
     float drain;
 
-    public Color32 startColorHealth;
-    public Color32 startColorStamina;
-    public Color32 startColorExp;
-    public Color32 endColor;
+    public Color startColorHealth;
+    public Color startColorStamina;
+    public Color startColorExp;
+    public Color endColor;
 
     private float placeHolder;
 
@@ -127,6 +127,7 @@ public class PlayerCombatOverlay : MonoBehaviour {
         //"myHealth" needs to be set between the values of 0 and 1: 1 being 100%.
         healthBar.transform.localScale = new Vector3(myHealth, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
         //healthBar.color = Color.Lerp(endColor, startColorHealth, calculatorHealth);
+		//print (calculatorHealth + ":Health");
     }
     //-------------Setting the Look of the Mana Bar------------------
     public void SetStamina(float myStamina)

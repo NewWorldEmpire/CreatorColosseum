@@ -206,7 +206,7 @@ public class CombatScript : MonoBehaviour
         }
 
         //switching from melee to range
-        if (Input.GetKeyUp(KeyCode.Q) && chargeShot <= 0)
+        if ((Input.GetKeyUp(KeyCode.Q) || Input.GetMouseButtonUp(2)) && chargeShot <= 0)
         {
             if (melee == false)
             {
