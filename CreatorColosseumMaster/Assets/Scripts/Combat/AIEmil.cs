@@ -50,6 +50,7 @@ public class AIEmil : MonoBehaviour {
 
     public AudioSource sound;
     public AudioClip smallLaserClip;
+    public AudioClip smallLaserCharge;
     public AudioClip bigLaserClip;
     public AudioClip laserChargeClip;
 
@@ -107,6 +108,7 @@ public class AIEmil : MonoBehaviour {
 
 		if ((Time.time - wait) > (smallLaserDelay - smallPositionShootDelay) && !grabPosition) 
 		{
+            sound.PlayOneShot(smallLaserCharge);
 			playerPosition = _player.transform.position;
 			grabPosition = true;
 		}

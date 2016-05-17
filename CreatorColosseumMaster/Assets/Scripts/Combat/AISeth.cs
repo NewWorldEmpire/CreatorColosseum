@@ -5,6 +5,7 @@ public class AISeth : MonoBehaviour {
 
 	public AudioSource sourceSound;
 	public AudioClip attackSound;
+    public AudioClip engineRevClip;
 
 	public int resetSpeed;
 	public int chargeSpeed;
@@ -34,6 +35,7 @@ public class AISeth : MonoBehaviour {
 
 	public bool isReset = true;
 	public bool isAttack;
+    private bool playSound;
 
 	// Use this for initialization
 	void Start () 
@@ -119,14 +121,24 @@ public class AISeth : MonoBehaviour {
 		//print (wait + ": wait");
 		//print (Time.time + ": time");
 
-		if ((Time.time - wait) > (waitTime + 3.5)) //3.5 to compinsiate for getting to point
+		if ((Time.time - wait) > (3.5)) //3.5 to compinsiate for getting to point
 		{
-			if (yReached && xReached) 
-			{
-				isAttack = true;
-				isReset = false;
-				grabPlayerY = false;
-			}
+            if (!playSound)
+            {
+                sourceSound.PlayOneShot(engineRevClip);
+                playSound = true;
+            }
+            if ((Time.time - wait) > (waitTime + 3.5))
+            {                
+                if (yReached && xReached)
+                {
+                    sourceSound.PlayOneShot(engineRevClip);
+                    isAttack = true;
+                    isReset = false;
+                    grabPlayerY = false;
+                    playSound = false;
+                }
+            }			
 		}
 	}
 
