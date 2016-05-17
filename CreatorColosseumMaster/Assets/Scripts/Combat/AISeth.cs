@@ -9,7 +9,7 @@ public class AISeth : MonoBehaviour {
 	public int resetSpeed;
 	public int chargeSpeed;
 
-	public int chargeDamage;
+	public float chargeDamage;
 
 	public float waitTime;
 	private float wait;
