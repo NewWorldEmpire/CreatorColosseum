@@ -8,6 +8,7 @@ public class AIMike : MonoBehaviour {
 
     public float movingSpeed;
     public float fireFreq;
+	public float animationDelay;
     private float xPos;
     private float lastShot;
 
@@ -52,7 +53,6 @@ public class AIMike : MonoBehaviour {
             if (Time.time > lastShot + fireFreq)
             {
                 ShootPhase();
-                destination = CreateDestination();
             }
             else
             {
@@ -87,8 +87,6 @@ public class AIMike : MonoBehaviour {
     //====================MOVING PHASE=====================
     void MovePhase(Vector2 destination)
     {
-        
-
         //moving up and down towards destination
         if ((destination.y - 1) > transform.position.y)
         {
@@ -126,22 +124,26 @@ public class AIMike : MonoBehaviour {
     //------------------ShootPhase()---------
     void ShootPhase()
     {
-        sound.PlayOneShot(tankFire);        
+		GetComponent<Animator> ().SetBool ("Shoot", true);
+		GetComponent<Animator> ().SetBool ("TankIdle", false);
 
-        GetComponent<Animator>().SetBool("Shoot", true);
-        GetComponent<Animator>().SetBool("TankIdle", false);
+		if (Time.time > (lastShot + fireFreq + animationDelay)) 
+		{
+			sound.PlayOneShot(tankFire);  
 
-        lastShot = Time.time;
+			lastShot = Time.time;
 
-        GameObject obj = EnemyFluttershyPooling.current.GetPooledObject();
+			GameObject obj = EnemyFluttershyPooling.current.GetPooledObject ();
 
-        if (obj == null)
-        {
-            return;
-        }
+			if (obj == null) {
+				return;
+			}
 
-        obj.transform.position = bulletSpawn.position;
-        obj.transform.rotation = transform.rotation;
-        obj.SetActive(true);
+			obj.transform.position = bulletSpawn.position;
+			obj.transform.rotation = transform.rotation;
+			obj.SetActive (true);
+
+			destination = CreateDestination();
+		}
     }
 }

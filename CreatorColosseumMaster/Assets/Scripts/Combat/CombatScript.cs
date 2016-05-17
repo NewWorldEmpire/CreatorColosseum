@@ -6,6 +6,8 @@ public class CombatScript : MonoBehaviour
 {
     public GameObject self;
     public MouseScript _mouse;
+	public Texture2D	rangeCursor;
+	public Texture2D	meleeCursor;
     public Transform playerPOS;
     public GameObject up;
     public GameObject down;
@@ -26,6 +28,7 @@ public class CombatScript : MonoBehaviour
     public float meleeAdjustment = 0.5f;
     public int maxHealth = 65;
     public float health;
+	private float healthTotal; 						//new
     [Range(0.03f, 0.08f)]
     public float criticalChance;
     [Range(2, 5)]
@@ -117,6 +120,8 @@ public class CombatScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		Cursor.SetCursor(meleeCursor, Vector2.zero, CursorMode.Auto); //new
+
         anim = GetComponent<Animator>();
 
         au_bow1 = gameObject.AddComponent<AudioSource>();
@@ -211,11 +216,13 @@ public class CombatScript : MonoBehaviour
             if (melee == false)
             {
                 melee = true;
+				Cursor.SetCursor(meleeCursor, Vector2.zero, CursorMode.Auto); //new
             }
             //switching from range to melee
             else
             {
                 melee = false;
+				Cursor.SetCursor(rangeCursor, Vector2.zero, CursorMode.Auto); //new
             }
         }
 
@@ -629,9 +636,24 @@ public class CombatScript : MonoBehaviour
             GameObject childObject = Instantiate(restorationPrefab, transform.position, transform.rotation) as GameObject;
             childObject.transform.parent = gameObject.transform;
 
-            health += healthRestore;
-            if (health > maxHealth)
-                health = maxHealth;
+			if (health + healthRestore >= maxHealth) //new
+			{
+				healthTotal = maxHealth - health;
+			}
+			else
+			{
+				healthTotal = healthRestore; //new
+			}
+			health += healthRestore;
+
+			if (health > maxHealth)
+				health = maxHealth;
+
+			this.GetComponent<PlayerReceivesDamage>().InitiateCBT(healthTotal.ToString()).GetComponent<Animator>().SetTrigger("Heal"); //new
+			//print (healthTotal + ":healthTotal");
+			//print (maxHealth + ":maxHealth");
+			//print (health + ":currentHealth");
+
             restoreTimer = 3;
             restoreCoolDown = restoreCoolDownLength;
         }

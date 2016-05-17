@@ -12,6 +12,7 @@ public class Bullet : MonoBehaviour {
     private int armor;
 
     public Vector2 destination;
+	//public BoxCollider2D _collider;
 
     // Use this for initialization
     void Start()
