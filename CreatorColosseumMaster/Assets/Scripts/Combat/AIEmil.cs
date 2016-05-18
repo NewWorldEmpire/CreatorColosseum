@@ -229,6 +229,7 @@ public class AIEmil : MonoBehaviour {
 		_laser.SetActive(false);
 		grabTime = false;
 		grabPosition = false;
+		//_laser.GetComponent<LaserBig> ().damageCount = 0;
 	}
 }
 
