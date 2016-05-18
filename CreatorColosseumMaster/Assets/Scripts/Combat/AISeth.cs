@@ -27,6 +27,9 @@ public class AISeth : MonoBehaviour {
 
 	public GameObject _player;
 	public GameObject _level;
+	public GameObject leftHeadLight;
+	public GameObject rightHeadLight;
+
 
 	public bool xReached;
 	public bool yReached;
@@ -104,11 +107,16 @@ public class AISeth : MonoBehaviour {
             {
                 GetComponent<Animator>().SetBool("SethLeft", true);
                 GetComponent<Animator>().SetBool("SethRight", false);
+				leftHeadLight.SetActive(true);
+				rightHeadLight.SetActive(false);
+
             }
             else if (resetPoint < 0)
             {
                 GetComponent<Animator>().SetBool("SethRight", true);
                 GetComponent<Animator>().SetBool("SethLeft", false);
+				leftHeadLight.SetActive(false);
+				rightHeadLight.SetActive(true);
             }
 
             destination = new Vector2 (resetPoint, _player.transform.position.y);

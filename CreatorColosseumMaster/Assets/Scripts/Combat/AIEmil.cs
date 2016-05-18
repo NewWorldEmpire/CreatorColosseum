@@ -24,6 +24,7 @@ public class AIEmil : MonoBehaviour {
 	Vector2  playerPosition;
 	Vector2	facePosition;
 	Vector2 	tempVector;
+	public Transform   bigLaserPosition;
 	public GameObject  bigLaserPoint;
 
 	public GameObject	_player;
@@ -214,11 +215,11 @@ public class AIEmil : MonoBehaviour {
 		_laser.GetComponent<LineRenderer>().SetWidth (10, 10);
 
 		tempVector = new Vector2 (_laserSpawn.transform.position.x, bigLaserPoint.transform.position.y);
-		_laser.GetComponent<LineRenderer> ().SetPosition (0, tempVector);
+		_laser.GetComponent<LineRenderer> ().SetPosition (0, _laserSpawn.transform.position);
 		_laser.GetComponent<LineRenderer> ().SetPosition (1, bigLaserPoint.transform.position);
 
-		tempVector = new Vector2 (0, bigLaserPoint.transform.position.y);
-		bigLaserCollider.transform.position = tempVector;
+		//tempVector = new Vector2 (0, bigLaserPosition.transform.position.y);
+		bigLaserCollider.transform.position = bigLaserPosition.position;
 	}
 
 	void EndLaser()

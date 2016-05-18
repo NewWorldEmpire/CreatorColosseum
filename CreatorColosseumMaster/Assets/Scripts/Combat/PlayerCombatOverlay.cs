@@ -126,7 +126,7 @@ public class PlayerCombatOverlay : MonoBehaviour {
     {
         //"myHealth" needs to be set between the values of 0 and 1: 1 being 100%.
         healthBar.transform.localScale = new Vector3(myHealth, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
-        //healthBar.color = Color.Lerp(endColor, startColorHealth, calculatorHealth);
+        healthBar.color = Color.Lerp(endColor, startColorHealth, calculatorHealth);
 		//print (calculatorHealth + ":Health");
     }
     //-------------Setting the Look of the Mana Bar------------------
